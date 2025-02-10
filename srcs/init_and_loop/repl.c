@@ -1,0 +1,221 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   repl.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
+/*   Updated: 2025/02/06 11:17:12 by mchingi          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../inc/minishell.h"
+
+static bool	is_builtin(t_type type);
+
+static void	read_input(t_shell *shell)
+{
+	shell->input = ft_strtrim(readline("minishell$ "), " ");		
+	if (!shell->input)
+	{
+		fprintf(stderr, "Error: Empty prompt\n");
+		shell->flag = false;
+	}
+	add_history(shell->input);						//adiciona input ao historico
+}
+
+static int number_of_commands(t_token *tokens)
+{
+	t_token *tmp;
+	int	number;
+
+	number = 0;
+	tmp = tokens;
+	while (tmp)
+	{
+		if (tmp->type == COMMAND || is_builtin(tmp->type))
+			number++;
+		tmp = tmp->next;
+	}
+	return(number);
+}
+
+static void	parse(t_shell *shell)
+{
+	shell->matrix = split_input(shell->input, shell);				//divide o prompt em um matriz de strings
+	if (!shell->matrix)
+	{
+		fprintf(stderr, "Error: Failed to parse input");
+		shell->flag = false;
+	}
+	expand(&shell->matrix, shell->env);					//expande variaveis de ambiente
+	shell->token = tokenize_matrix(shell->matrix);
+	if (!shell->token)
+	{
+		// fprintf(stderr, "Error: Failed to tokenize input\n");
+		shell->flag = false;
+		return ;
+	}
+	identify_tokens(shell->token, shell->path);				//identifica os tokens
+	token_sequence(shell->token);						//verifica a sequencia dos tokens
+	shell->number_of_commands = number_of_commands(shell->token);
+	shell->flag = true;
+}
+
+char	*cmd_path(char *cmd, char *pat)
+{
+	char **paths;
+	char *path;
+	int	i;
+	char *tmp;
+
+	i = 0;
+	paths = ft_split(pat, ':');
+	while(paths[i])
+	{
+		tmp = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(path, F_OK) == 0)
+			return (path);
+		free(path);
+		i++;
+	}
+	free(paths);
+	return(NULL);
+}
+
+void	exec_cmd(t_shell *shell)
+{
+	char *pat;
+	char	**options;
+	t_token	*tmp = shell->token;
+	int	size = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		size++;
+	}
+	options = malloc(sizeof(char **) * size + 1);
+	tmp = shell->token;
+	size = 0;
+	while (tmp)
+	{
+		options[size] = tmp->value;
+		tmp = tmp->next;
+		size++;
+	}
+	options[size] = NULL;
+	tmp = shell->token;
+	pat = cmd_path(tmp->value, shell->path);
+	pid_t id = fork();
+	if (id == -1)
+	{
+		printf("tá fodido\n");
+		exit (0);
+	}
+	if (id == 0)
+		if (execve(pat, options, shell->anv) == -1)
+			printf("tá bem fodido!\n");
+	waitpid(id, NULL, 0);
+}
+
+void	exec_builtins(t_shell *shell)
+{
+		t_token *tmp;
+
+		tmp = shell->token;
+
+		if (tmp->type == ECHO)
+		{
+			tmp = tmp->next;
+			ft_echo(tmp);
+		}
+		else if (tmp->type == EXIT)
+		{
+			tmp = tmp->next;
+			ft_exit(shell, shell->token);
+		}
+		else if (tmp->type == PWD)
+		{
+			tmp = tmp->next;
+			ft_pwd(shell->token);
+		}
+		else if (tmp->type == CD)
+		{
+			tmp = tmp->next;
+			if (tmp)
+				ft_cd(tmp);
+		}
+		else if (tmp->type == ENV)
+		{
+			tmp = tmp->next;
+			ft_env(shell->env, shell->token);
+		}
+		else if (tmp->type == EXPORT)
+		{
+			tmp = tmp->next;
+			ft_export(shell->env, tmp);
+		}
+		else if (tmp->type == UNSET)
+		{
+			tmp = tmp->next;
+			ft_unset(shell->env, tmp);
+		}
+}
+
+static bool	is_builtin(t_type type)
+{
+	return (type == ECHO || type == CD || type == PWD ||
+		type == EXPORT || type == UNSET || type == ENV || type == EXIT);
+}
+
+void	execute(t_shell *shell)
+{
+		t_token *tmp;
+
+		tmp = shell->token;
+		// if (is_command(tmp->value, shell->path))
+		// 	exec_cmd(shell);
+		// else
+		// 	exec_builtins(shell);
+		if (is_builtin(tmp->type))
+			exec_builtins(shell);
+		else if (tmp->type == COMMAND)
+			exec_cmd(shell);
+
+}
+
+int		check_for_pipe(char *str)
+{
+	int i = 0;
+	while (str[i])
+	{
+		if (str[i] == '|' && str[i + 1] != '|')
+			return (1);
+		else if (str[i] == '|' && str[i + 1] == '|')
+			return(0);
+		i++;
+	}
+	return (0);
+}
+
+void	repl(t_shell *shell)
+{
+	while (1)
+	{
+		read_input(shell);						//leitura do prompt
+		parse(shell);
+		// if (check_for_pipe(shell->input))
+		execute_pipe(shell);
+		
+		//handle signals
+		// if (shell->flag)
+		// else
+		// 	execute(shell);
+		// printf("\n%d\n", shell->number_of_commands);
+		// debug(shell->token, shell->number_of_commands);						//debugar tokens
+		// printf("%s\n", shell->input);
+	}
+}

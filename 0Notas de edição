@@ -1,0 +1,8 @@
+Neste file irá tudo deste o que se alterou ao que falta se altarar.
+
+procurar caracteres que da loop infinito ao tokenizar ( ; ) ( [ )
+
+refazer a logica de aquisicao das envs e expansao(nao pega todas as envs, neste momento isto causa grandes impactos na execucao do programa)
+
+!!! Tratar os sinais !!!
+^C should close the child process and when passed in ./minishell has to show a new prompt  
