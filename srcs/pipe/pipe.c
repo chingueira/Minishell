@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:00:49 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/03 15:32:55 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/10 12:17:57 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int		count_arr_elem(char **arr)
 void	execute_command(char *command, t_pipe *pipes, int in, int out)
 {
 	char	*path;
-	char	**args;
 	char	*cmd;
+	char	**args;
 
 	cmd = strdup(command);
 	args = ft_split(cmd, ' ');
@@ -117,11 +117,13 @@ void	execute_pipe(t_shell *shell)
 	int		num_commands;
 	char	**cmd;
 	pid_t	id;
+	char	*clean_input;
 	t_pipe	*pipes = malloc(sizeof(t_pipe));
 
 	pipes->i = 0;
 	pipes->input_fd = 0;
-	cmd = ft_split(shell->input, '|');
+	clean_input = clean_string(shell->input);
+	cmd = ft_split(clean_input, '|');
 	num_commands = count_arr_elem(cmd);
 	pipes->ev = shell->anv;
 	

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:21:36 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/28 15:31:06 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/10 12:03:15 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	expand(char ***matrix, t_env *env);
 void	init_shell(t_shell *shell, char **env);
 void	identify_tokens(t_token *tokens, char *path);
 void	execute_pipe(t_shell *shell);
+char	*clean_string(char *str);
+char	**clean_args(char **args);
 
 int		word_count_util(char *i, int count);
 int		count_char(char *input, char c);
