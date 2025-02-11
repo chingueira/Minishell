@@ -86,6 +86,8 @@ char	*cmd_path(char *cmd, char *pat)
 	return(NULL);
 }
 
+// -------------- Talvez será eliminada! ----------------/
+
 void	exec_cmd(t_shell *shell)
 {
 	char *pat;
@@ -120,6 +122,24 @@ void	exec_cmd(t_shell *shell)
 			printf("tá bem fodido!\n");
 	waitpid(id, NULL, 0);
 }
+
+void	execute(t_shell *shell)
+{
+		t_token *tmp;
+
+		tmp = shell->token;
+		// if (is_command(tmp->value, shell->path))
+		// 	exec_cmd(shell);
+		// else
+		// 	exec_builtins(shell);
+		if (is_builtin(tmp->type))
+			exec_builtins(shell);
+		else if (tmp->type == COMMAND)
+			exec_cmd(shell);
+
+}
+
+// -----------------------------------------------------/
 
 void	exec_builtins(t_shell *shell)
 {
@@ -171,21 +191,6 @@ static bool	is_builtin(t_type type)
 		type == EXPORT || type == UNSET || type == ENV || type == EXIT);
 }
 
-void	execute(t_shell *shell)
-{
-		t_token *tmp;
-
-		tmp = shell->token;
-		// if (is_command(tmp->value, shell->path))
-		// 	exec_cmd(shell);
-		// else
-		// 	exec_builtins(shell);
-		if (is_builtin(tmp->type))
-			exec_builtins(shell);
-		else if (tmp->type == COMMAND)
-			exec_cmd(shell);
-
-}
 
 static bool	pipe_check(t_shell *shell)
 {
