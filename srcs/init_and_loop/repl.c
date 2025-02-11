@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   repl.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/11 12:38:46 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/11 11:55:28 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,18 +192,23 @@ static bool	is_builtin(t_type type)
 }
 
 
-int		check_for_pipe(char *str)
+static bool	pipe_check(t_shell *shell)
 {
-	int i = 0;
-	while (str[i])
+	t_token *tmp = shell->token;
+	while (tmp)
 	{
-		if (str[i] == '|' && str[i + 1] != '|')
-			return (1);
-		else if (str[i] == '|' && str[i + 1] == '|')
-			return(0);
-		i++;
+		if (tmp->type == PIPE)
+		{
+			if (tmp->next->type != COMMAND)
+			{
+				printf("Error: Invalid pipe\n");
+				return (false);
+			}
+			return (true);
+		}
+		tmp = tmp->next;
 	}
-	return (0);
+	return (false);
 }
 
 void	repl(t_shell *shell)
@@ -212,17 +217,13 @@ void	repl(t_shell *shell)
 	{
 		read_input(shell);						//leitura do prompt
 		parse(shell);
-		// if (check_for_pipe(shell->input))
-		// execute_pipe(shell);
-		if (check_doc(shell->input))
-		{
-			here_doc(shell->input);
-			
-		}
+		if (pipe_check(shell))
+			execute_pipe(shell);
+		else
+			execute(shell);
 		//handle signals
 		// if (shell->flag)
 		// else
-		// 	execute(shell);
 		// printf("\n%d\n", shell->number_of_commands);
 		// debug(shell->token, shell->number_of_commands);						//debugar tokens
 		// printf("%s\n", shell->input);
