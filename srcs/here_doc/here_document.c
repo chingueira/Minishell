@@ -6,7 +6,7 @@
 /*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:56:07 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/10 10:52:44 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/11 12:07:02 by mchingi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,12 @@
 	Armazenar os inputs num file;
 	Executar o comando que antecede << tendo como STDIN o file;
 	Eliminar o file;
+
+	cmd << DELIMETER arg[4]
+
+	arg[4] = If here appears an arg 
+			it just became the arg of cmd 
+			and execute but ignores Here_DOC
 */
 
 #include <strings.h>

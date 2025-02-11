@@ -6,7 +6,7 @@
 /*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/06 11:17:12 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/11 12:38:46 by mchingi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ char	*cmd_path(char *cmd, char *pat)
 	return(NULL);
 }
 
+// -------------- Talvez será eliminada! ----------------/
+
 void	exec_cmd(t_shell *shell)
 {
 	char *pat;
@@ -120,6 +122,24 @@ void	exec_cmd(t_shell *shell)
 			printf("tá bem fodido!\n");
 	waitpid(id, NULL, 0);
 }
+
+void	execute(t_shell *shell)
+{
+		t_token *tmp;
+
+		tmp = shell->token;
+		// if (is_command(tmp->value, shell->path))
+		// 	exec_cmd(shell);
+		// else
+		// 	exec_builtins(shell);
+		if (is_builtin(tmp->type))
+			exec_builtins(shell);
+		else if (tmp->type == COMMAND)
+			exec_cmd(shell);
+
+}
+
+// -----------------------------------------------------/
 
 void	exec_builtins(t_shell *shell)
 {
@@ -171,21 +191,6 @@ static bool	is_builtin(t_type type)
 		type == EXPORT || type == UNSET || type == ENV || type == EXIT);
 }
 
-void	execute(t_shell *shell)
-{
-		t_token *tmp;
-
-		tmp = shell->token;
-		// if (is_command(tmp->value, shell->path))
-		// 	exec_cmd(shell);
-		// else
-		// 	exec_builtins(shell);
-		if (is_builtin(tmp->type))
-			exec_builtins(shell);
-		else if (tmp->type == COMMAND)
-			exec_cmd(shell);
-
-}
 
 int		check_for_pipe(char *str)
 {
@@ -208,8 +213,12 @@ void	repl(t_shell *shell)
 		read_input(shell);						//leitura do prompt
 		parse(shell);
 		// if (check_for_pipe(shell->input))
-		execute_pipe(shell);
-		
+		// execute_pipe(shell);
+		if (check_doc(shell->input))
+		{
+			here_doc(shell->input);
+			
+		}
 		//handle signals
 		// if (shell->flag)
 		// else

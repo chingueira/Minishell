@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:21:36 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/10 12:03:15 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/11 11:54:06 by mchingi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,15 @@
 # include <unistd.h>
 # include <errno.h>
 # include <fcntl.h>
+
+
+// ----------------- Redirections & Here Document -------------------/
+
+void	redirect_input(char *cmd, char *file, char **env);
+void	redirect_output(char *cmd, char *file, char **env);
+
+void	here_doc(char *str);
+int		check_doc(char *input);
 
 //------------------- Builtins --------------------/
 void	ft_pwd(t_token *token);
