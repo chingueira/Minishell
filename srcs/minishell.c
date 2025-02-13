@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:22:46 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/16 14:19:26 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:37:55 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	main(int ac, char **av, char **environment)
 
 	if (ac != 1)
 		print_error("Error: too many arguments", NULL);
-	init_shell(&shell, environment);					//inicializar variaveis da struct shell
-	repl(&shell);								//loop infinito para ler input e tokenizar
+	init_shell(&shell, environment);
+	repl(&shell);
 	//clean_and_exit(&shell);
-	(void)av;								//para evitar warning
+	(void)av;
 	return (0);
 }

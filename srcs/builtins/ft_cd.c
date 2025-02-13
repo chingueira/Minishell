@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 16:02:16 by mchingi           #+#    #+#             */
-/*   Updated: 2025/01/29 09:10:09 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/11 21:19:16 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	ft_cd(t_token *current)
 	char	*cur_path;
 	char	*path;
 	char	*new_path;
-
 
 	cur_path = getcwd(NULL, 0);
 	if (current->next)
@@ -57,4 +56,3 @@ void	ft_cd(t_token *current)
 	printf("\nfrom built-ins\n");
 }
 
-/* Falta o prompt "cd" onde o utilizador vai para a home */

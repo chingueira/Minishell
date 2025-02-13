@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:00:49 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/10 12:17:57 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/13 19:23:02 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,6 @@ void	child_process(char *cmd, t_pipe *pipes, int num_commands)
 	execute_command(cmd, pipes, STDIN_FILENO, STDOUT_FILENO);
 }
 
-
 void	parent_process(t_pipe *pipes, int num_commands)
 {
 	if (pipes->input_fd != 0)
@@ -126,7 +125,6 @@ void	execute_pipe(t_shell *shell)
 	cmd = ft_split(clean_input, '|');
 	num_commands = count_arr_elem(cmd);
 	pipes->ev = shell->anv;
-	
 	while (pipes->i < num_commands)
 	{
 		if (pipes->i < num_commands)
