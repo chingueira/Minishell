@@ -8,3 +8,5 @@ refazer a logica de aquisicao das envs e expansao(nao pega todas as envs, neste 
 ^C should close the child process and when passed in ./minishell has to show a new prompt  
 
 teste
+
+testar a sequencia de tokens
