@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 11:50:46 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/03 15:16:30 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/13 16:19:58 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,24 @@ typedef struct s_pipe
 	char 	**ev;
 }		t_pipe;
 
+typedef struct	s_command
+{
+	char	*command;
+	char	**args;
+	char	*path;
+	struct s_command	*next;
+}	t_command;
+
 struct s_shell
 {
 	t_token	*token;
 	t_env	*env;
 	t_pipe	*pipe;
+	t_command	*command_groups;
 	char	**matrix;
 	char	*input;
 	char	*path;
+	int		pipe_fd[2];
 	bool	flag;
 	int		result;
 	char	*current_dir;
