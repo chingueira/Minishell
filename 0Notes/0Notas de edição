@@ -10,3 +10,6 @@ refazer a logica de aquisicao das envs e expansao(nao pega todas as envs, neste 
 teste
 
 testar a sequencia de tokens
+testar com e sem aspas todos os comandos
+mudar a tokenizacao para mandar sem aspas os argumentos
+fix cd -

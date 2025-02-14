@@ -6,11 +6,11 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:18:11 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/13 16:20:11 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/14 23:19:29 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+#include "../inc/minishell.h"
 
 void	init_shell(t_shell *shell, char **env)
 {

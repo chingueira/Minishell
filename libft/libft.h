@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:02:03 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/16 11:48:58 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/14 22:30:59 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,12 @@
 # define ALL "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 typedef struct s_list	t_list;
-typedef struct s_shell	t_generic;
+
+typedef struct s_garbage
+{
+	void	*data;
+	struct s_garbage	*next;
+}	t_garbage;
 
 int		ft_abs(int n);
 int		numlen(int n);
@@ -79,7 +84,6 @@ void	ft_bzero(void *s, size_t n);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putendl_fd(char *s, int fd);
-void	clean_and_exit(t_generic *data);
 void	ft_putstr_fd(const char *s, int fd);
 void	*ft_realloc(void *ptr, size_t size);
 void	*ft_memset(void *s, int c, size_t n);

@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:21:36 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/14 10:41:14 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/14 23:11:39 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,28 @@ t_token	*tokenize_matrix(char **matrix);
 t_token	*get_token_lowest_precedence(t_token *tokens);
 t_token	*new_token(char *value, t_type type, t_group_type group_type);
 
-bool	is_builtin_or_command(t_type type);
+
+// ----------------- repl -------------------/
+bool	pipe_check(t_shell *shell);
+
+void	debug_commands(t_command *command_groups);
+
+void	execute(t_shell *shell);
+
+void	exec_builtins(t_shell *shell);
+
+void	exec_cmd(t_shell *shell);
+
+// ----------------- utils -------------------/
 bool	is_builtin(t_type type);
+bool	is_operator(t_type type);
+bool	is_argument(t_type type);
+bool	is_redirection(t_type type);
+bool	is_builtin_or_command(t_type type);
+
+void	error_message(char *str);
+
+int	count_args(t_token *tmp_token);
+int	number_of_commands(t_token *tokens);
+
 #endif

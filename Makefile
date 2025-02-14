@@ -3,51 +3,55 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+         #
+#    By: welepy <welepy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 14:34:20 by welepy            #+#    #+#              #
-#    Updated: 2025/02/03 15:25:39 by mchingi          ###   ########.fr        #
+#    Updated: 2025/02/14 23:32:48 by welepy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME        =   minishell
-CC          =   cc
-CFLAGS      =   -Wall -Wextra -Werror
-LRFLAGS     =   -lreadline
-SRCS        =   ./srcs/env/expand.c				\
-                ./srcs/env/convert_env.c				\
-                ./srcs/parser/parse_utils/utils.c		\
-                ./srcs/parser/split/split_input_ext.c		\
-                ./srcs/parser/split/split_input.c		\
-                ./srcs/parser/lexer/tokens.c			\
-				./srcs/pipe/pipe.c		\
-                ./srcs/utils/utils.c				\
-		./srcs/init_and_loop/init.c			\
-		./srcs/init_and_loop/repl.c			\
-		./srcs/builtins/ft_echo.c			\
-		./srcs/builtins/ft_pwd.c				\
-		./srcs/builtins/ft_cd.c				\
-		./srcs/builtins/ft_exit.c			\
-		./srcs/builtins/ft_export.c			\
-		./srcs/builtins/ft_unset.c			\
-		./srcs/builtins/ft_env.c				\
-                ./srcs/minishell.c
+CC				=	cc
+NAME			=	minishell
+LRFLAGS			=	-lreadline
+CFLAGS			=	-Wall -Wextra -Werror
 
-HEADER      =   minishell.h
-LIBFT       =   ./libft
-LFT         =   $(LIBFT)/libft.a
-OBJ_DIR     =   objects
-OBJS        =   $(SRCS:./%.c=$(OBJ_DIR)/%.o)
+SRCS			=	./srcs/env/expand.c						\
+					./srcs/env/convert_env.c				\
+					./srcs/parser/parse_utils/utils.c		\
+					./srcs/parser/split/split_input_ext.c	\
+					./srcs/parser/split/split_input.c		\
+					./srcs/parser/lexer/tokens.c			\
+					./srcs/pipe/pipe.c						\
+					./srcs/utils/utils.c					\
+					./srcs/utils/counters.c					\
+					./srcs/utils/identifiers.c				\
+					./srcs/init.c							\
+					./srcs/repl/repl.c						\
+					./srcs/repl/repl_utils.c				\
+					./srcs/builtins/ft_echo.c				\
+					./srcs/builtins/ft_pwd.c				\
+					./srcs/builtins/ft_cd.c					\
+					./srcs/builtins/ft_exit.c				\
+					./srcs/builtins/ft_export.c				\
+					./srcs/builtins/ft_unset.c				\
+					./srcs/builtins/ft_env.c				\
+					./srcs/minishell.c
 
-TOTAL_FILES =   $(words $(OBJS))
-CURRENT_FILE =  0
+HEADER			=	minishell.h
+LIBFT			=	./libft
+LFT				=	$(LIBFT)/libft.a
+OBJ_DIR			=	objects
+OBJS			=	$(SRCS:./%.c=$(OBJ_DIR)/%.o)
+
+TOTAL_FILES		=	$(words $(OBJS))
+CURRENT_FILE	=	0
 
 all: $(NAME)
 
-LIBMAKE     =   $(MAKE) -C $(LIBFT)
+LIBMAKE			=	$(MAKE) -C $(LIBFT)
 
 $(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)/srcs/env $(OBJ_DIR)/srcs/parser/parse_utils $(OBJ_DIR)/srcs/parser/split $(OBJ_DIR)/srcs/parser/lexer $(OBJ_DIR)/srcs/utils $(OBJ_DIR)/srcs $(OBJ_DIR)/srcs/init_and_loop $(OBJ_DIR)/srcs/builtins $(OBJ_DIR)/srcs/pipe
+	@mkdir -p $(OBJ_DIR)/srcs/env $(OBJ_DIR)/srcs/parser/parse_utils $(OBJ_DIR)/srcs/parser/split $(OBJ_DIR)/srcs/parser/lexer $(OBJ_DIR)/srcs/utils $(OBJ_DIR)/srcs $(OBJ_DIR)/srcs/repl $(OBJ_DIR)/srcs/builtins $(OBJ_DIR)/srcs/pipe $(OBJ_DIR)/srcs/repl/read
 
 $(OBJ_DIR)/%.o: ./%.c | $(OBJ_DIR)
 	$(eval CURRENT_FILE := $(shell echo $$(($(CURRENT_FILE)+1))))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:37:07 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/16 13:02:20 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/14 22:32:25 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,25 @@ void expand(char ***matrix, t_env *env)
 	}
 }
 
+static char	*process_expansion_helper(t_env *env, char *result, char *temp)
+{
+	char *value;
+
+	value = get_env_value(env, temp);
+	free(temp);
+	if (value)
+		result = ft_strjoin_free(result, value);
+	else
+		result = ft_strjoin_free(result, "");
+	return (result);
+}
+
 static char *process_expansion(char *str, t_env *env)
 {
 	char *result;
 	char *start;
 	char *end;
 	char *temp;
-	char *value;
 
 	start = str;
 	result = ft_strdup("");
@@ -75,9 +87,7 @@ static char *process_expansion(char *str, t_env *env)
 		while (*end && (ft_isalnum(*end) || *end == '_'))
 			end++;
 		temp = ft_substr(start, 0, end - start);
-		value = get_env_value(env, temp);
-		free(temp);
-		result = ft_strjoin_free(result, value ? value : "");
+		result = process_expansion_helper(env, result, temp);
 		str = end;
 	}
 	result = ft_strjoin_free(result, str);
