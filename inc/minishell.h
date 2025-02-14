@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:21:36 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/11 11:54:06 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/14 10:41:14 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,6 @@ t_token	*tokenize_matrix(char **matrix);
 t_token	*get_token_lowest_precedence(t_token *tokens);
 t_token	*new_token(char *value, t_type type, t_group_type group_type);
 
+bool	is_builtin_or_command(t_type type);
+bool	is_builtin(t_type type);
 #endif

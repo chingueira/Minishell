@@ -6,15 +6,17 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/13 21:36:50 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:50:47 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool	is_builtin(t_type type);
-void	exec_builtins(t_shell *shell);
-void	exec_p(t_shell *shell);
+void	error_message(char *str)
+{
+	perror(str);
+	exit(EXIT_FAILURE);
+}
 
 static void	read_input(t_shell *shell)
 {
@@ -36,7 +38,7 @@ static int number_of_commands(t_token *tokens)
 	tmp = tokens;
 	while (tmp)
 	{
-		if (tmp->type == COMMAND || is_builtin(tmp->type))
+		if (is_builtin_or_command(tmp->type))
 			number++;
 		tmp = tmp->next;
 	}
@@ -79,57 +81,65 @@ char	*cmd_path(char *cmd, char *pat)
 		path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (access(path, F_OK) == 0)
+		{
+			free_matrix(paths);
 			return (path);
+		}
 		free(path);
 		i++;
 	}
-	free(paths);
+	if (paths)
+		free_matrix(paths);
 	return(NULL);
 }
 
 void	exec_cmd(t_shell *shell)
 {
-	char *pat;
+	char	*pat;
 	char	**options;
 	t_token	*tmp = shell->token;
 	int	size = 0;
+	pid_t	id;
+
 	while (tmp)
 	{
 		tmp = tmp->next;
 		size++;
 	}
-	options = malloc(sizeof(char **) * size + 1);
+	options = malloc(sizeof(char **) * (size + 1));
 	tmp = shell->token;
 	size = 0;
 	while (tmp)
 	{
-		options[size] = tmp->value;
+		options[size++] = tmp->value;
 		tmp = tmp->next;
-		size++;
 	}
 	options[size] = NULL;
-	tmp = shell->token;
-	pat = cmd_path(tmp->value, shell->path);
-	pid_t id = fork();
+	pat = cmd_path(shell->token->value, shell->path);
+	if (!pat)
+	{
+		fprintf(stderr, "Command not found: %s\n", shell->token->value);
+		free(options);
+		return ;
+	}
+	id = fork();
 	if (id == -1)
-		exit (0);
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
 	if (id == 0)
+	{
 		if (execve(pat, options, shell->anv) == -1)
-			printf("execve error!\n");
+		{
+			perror("execve");
+			exit(EXIT_FAILURE);
+		}
+	}
 	waitpid(id, NULL, 0);
+	free(options);
 }
 
-void	execute(t_shell *shell)
-{
-		t_token *tmp;
-
-		tmp = shell->token;
-		if (is_builtin(tmp->type))
-			exec_builtins(shell);
-		else if (tmp->type == COMMAND)
-			exec_cmd(shell);
-
-}
 
 void	exec_builtins(t_shell *shell)
 {
@@ -175,14 +185,19 @@ void	exec_builtins(t_shell *shell)
 		}
 }
 
-static bool	is_builtin(t_type type)
+void	execute(t_shell *shell)
 {
-	return (type == ECHO || type == CD || type == PWD ||
-		type == EXPORT || type == UNSET || type == ENV || type == EXIT);
+	t_token *tmp;
+
+	tmp = shell->token;
+	if (is_builtin(tmp->type))
+		exec_builtins(shell);
+	else if (tmp->type == COMMAND)
+		exec_cmd(shell);
+
 }
 
-
-/*static bool	pipe_check(t_shell *shell)
+static bool	pipe_check(t_shell *shell)
 {
 	t_token *tmp = shell->token;
 	while (tmp)
@@ -199,7 +214,7 @@ static bool	is_builtin(t_type type)
 		tmp = tmp->next;
 	}
 	return (false);
-}*/
+}
 
 int	count_args(t_token *tmp_token)
 {
@@ -239,12 +254,9 @@ void get_pipes(t_shell *shell)
 		else if (tmp_token->type == PIPE)
 		{
 			tmp_cmd->args[i] = NULL;
-			tmp_cmd->next = malloc(sizeof(t_command));
+			tmp_cmd->next = safe_malloc(sizeof(t_command));
 			tmp_cmd = tmp_cmd->next;
-			tmp_cmd->next = NULL;
-			tmp_cmd->command = NULL;
-			tmp_cmd->args = NULL;
-			tmp_cmd->path = NULL;
+			ft_memset(tmp_cmd, 0, sizeof(t_command));
 			i = 0;
 		}
 		tmp_token = tmp_token->next;
@@ -273,64 +285,66 @@ void	debug_commands(t_command *command_groups)
 	}
 }
 
-void exec_p(t_shell *shell)
+char	*find_path(char *cmd, char **envp)
 {
-	int i = 0;
-	int pipe_fds[2];
-	int prev_pipe = -1;
-	pid_t pid;
-	t_command *cmd = shell->command_groups;
+	char	**paths;
+	char	*path;
+	int		i;
+	char	*part_path;
 
-	while (cmd)
+	i = 0;
+	while (ft_strnstr(envp[i], "PATH", 4) == 0)
+		i++;
+	paths = ft_split(envp[i] + 5, ':');
+	i = 0;
+	while (paths[i])
 	{
-		if (cmd->next)
-		{
-			if (pipe(pipe_fds) == -1)
-			{
-				perror("pipe");
-				exit(EXIT_FAILURE);
-			}
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
-			exit(EXIT_FAILURE);
-		}
-		else if (pid == 0)
-		{
-			if (prev_pipe != -1)
-			{
-				dup2(prev_pipe, STDIN_FILENO);
-				close(prev_pipe);
-			}
-			if (cmd->next)
-			{
-				dup2(pipe_fds[1], STDOUT_FILENO);
-				close(pipe_fds[1]);
-				close(pipe_fds[0]);
-			}
-			execvp(cmd->command, cmd->args);
-			perror("execvp");
-			exit(EXIT_FAILURE);
-		}
-		if (prev_pipe != -1) 
-			close(prev_pipe);
-		if (cmd->next)
-			close(pipe_fds[1]);
-		prev_pipe = pipe_fds[0];
-		cmd = cmd->next;
+		part_path = ft_strjoin(paths[i], "/");
+		path = ft_strjoin(part_path, cmd);
+		free(part_path);
+		if (access(path, F_OK) == 0)
+			return (path);
+		free(path);
+		i++;
 	}
-	for (i = 0; i < shell->number_of_commands; i++)
-		wait(NULL);
+	i = -1;
+	free(paths);
+	return (0);
 }
 
-void	exec_comamnd(char *command, t_pipe *pipes, int in, int out)
+void	exec_command(t_command *cur_cmd_group, t_pipe *pipes, int in, int out)
 {
-	
+	char	*path;
+	char	*cmd;
+	char	**args;
+
+	cmd = strdup(cur_cmd_group->command);
+	args = malloc(sizeof(char *) * (matrix_len(cur_cmd_group->args) + 2));
+	args[0] = cmd;
+	for (int i = 0; cur_cmd_group->args[i]; i++)
+		args[i + 1] = cur_cmd_group->args[i];
+	args[matrix_len(cur_cmd_group->args) + 1] = NULL;
+	path = find_path(cmd, pipes->ev);
+	if (!path)
+	{
+		printf("This cmd %s does not exist!", args[0]);
+		exit(EXIT_FAILURE);
+	}
+	if (in != 0)
+	{
+		dup2(in, STDIN_FILENO);
+		close(in);
+	}
+	if (out != 1)
+	{
+		dup2(out, STDOUT_FILENO);
+		close(out);
+	}
+	if (execve(path, args, pipes->ev) == -1)
+		error_message("execve");
 }
 
-void	child_process(char *cmd, t_pipe *pipes, int num_commands)
+void	child_process(t_command *cur_cmd_group, t_pipe *pipes, int num_commands)
 {
 	if (pipes->input_fd != 0)
 	{
@@ -344,37 +358,64 @@ void	child_process(char *cmd, t_pipe *pipes, int num_commands)
 	}
 	if (pipes->i < num_commands - 1)
 		close(pipes->pipe_fd[0]);
-	execute_command(cmd, pipes, STDIN_FILENO, STDOUT_FILENO);
+	exec_command(cur_cmd_group, pipes, STDIN_FILENO, STDOUT_FILENO);
 }
+
+void	parent_process(t_pipe *pipes, int num_commands)
+{
+	if (pipes->input_fd != 0)
+		close(pipes->input_fd);
+	if (pipes->i < num_commands - 1)
+	{
+		close(pipes->pipe_fd[1]);
+		pipes->input_fd = pipes->pipe_fd[0];
+	}
+}
+
 void	exec_pipe(t_shell *shell)
 {
-	int	i = 0;
-	char	*clean_input;
-	t_command	*tmp_cmd = shell->command_groups;
 	pid_t	id;
-	
-	t_pipe	*pipes = malloc(sizeof(t_pipe));
+	t_command *tmp_cmd;
+	t_pipe	*pipes;
+	int		i = 0;
+
+	get_pipes(shell);
+	tmp_cmd = shell->command_groups;
+	pipes = malloc(sizeof(t_pipe));
 	pipes->input_fd = 0;
-	clean_input = clean_string(shell->input);
+	pipes->i = 0;
+
 	while (tmp_cmd)
 	{
-		if (tmp_cmd->next)
+		if (pipes->i < shell->number_of_commands - 1) // ✅ Only create pipes if needed
 		{
 			if (pipe(pipes->pipe_fd) == -1)
-				error_message("pipe");
+			{
+				perror("pipe");
+				exit(EXIT_FAILURE);
+			}
 		}
+
 		id = fork();
 		if (id == -1)
-			error_message("fork");
-		child_process(tmp_cmd->command, pipes, shell->number_of_commands);
-		else
 		{
-			wait(NULL);
-			parent_process(pipes, shell->number_of_commands);
+			perror("fork");
+			exit(EXIT_FAILURE);
 		}
+		if (id == 0)
+			child_process(tmp_cmd, pipes, shell->number_of_commands);
+		else
+			parent_process(pipes, shell->number_of_commands);
+
 		tmp_cmd = tmp_cmd->next;
 		pipes->i++;
 	}
+
+	// ✅ Wait for all child processes **after** loop
+	while (i++ < shell->number_of_commands)
+		wait(NULL);
+
+	free(pipes);
 }
 
 void	repl(t_shell *shell)
@@ -383,13 +424,10 @@ void	repl(t_shell *shell)
 	{
 		read_input(shell);
 		parse(shell);
-		// if (pipe_check(shell))
-		// 	exec_pipes(shell);
-		// else
-		// 	execute(shell);
-		// get_pipes(shell);
-		debug_commands(shell->command_groups);
-		exec_p(shell);
+		if (pipe_check(shell))
+			exec_pipe(shell);
+		else
+			execute(shell);
 		//handle signals
 		// if (shell->flag)
 		// else

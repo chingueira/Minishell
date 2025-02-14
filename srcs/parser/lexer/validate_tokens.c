@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_tokens.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:29:13 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/28 11:08:38 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/14 10:39:51 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,6 @@ void	validate_token_sequence(t_token *tokens)
 
 //echo ls cat || &&
 
-static bool	is_builtin_or_command(t_type type)
-{
-	return (type == COMMAND || type == ECHO || type == CD || type == PWD ||
-		type == EXPORT || type == UNSET || type == ENV);
-}
 
 void	token_sequence(t_token *tokens)
 {

@@ -6,44 +6,15 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 10:00:49 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/13 19:23:02 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:45:53 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	error_message(char *str)
-{
-	perror(str);
-	exit(EXIT_FAILURE);
-}
+/*
 
-char	*find_path(char *cmd, char **envp)
-{
-	char	**paths;
-	char	*path;
-	int		i;
-	char	*part_path;
 
-	i = 0;
-	while (ft_strnstr(envp[i], "PATH", 4) == 0)
-		i++;
-	paths = ft_split(envp[i] + 5, ':');
-	i = 0;
-	while (paths[i])
-	{
-		part_path = ft_strjoin(paths[i], "/");
-		path = ft_strjoin(part_path, cmd);
-		free(part_path);
-		if (access(path, F_OK) == 0)
-			return (path);
-		free(path);
-		i++;
-	}
-	i = -1;
-	free(paths);
-	return (0);
-}
 
 int		count_arr_elem(char **arr)
 {
@@ -144,4 +115,4 @@ void	execute_pipe(t_shell *shell)
 		}
 		pipes->i++;
 	}
-}
+}*/

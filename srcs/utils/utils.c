@@ -6,13 +6,19 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 20:43:34 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/10 12:21:00 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/14 10:41:01 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool	is_builtin_or_command(t_type type)
+bool	is_builtin(t_type type)
+{
+	return (type == ECHO || type == CD || type == PWD ||
+		type == EXPORT || type == UNSET || type == ENV || type == EXIT);
+}
+
+bool	is_builtin_or_command(t_type type)
 {
 	return (type == COMMAND || type == ECHO || type == CD || type == PWD ||
 		type == EXPORT || type == UNSET || type == ENV);
