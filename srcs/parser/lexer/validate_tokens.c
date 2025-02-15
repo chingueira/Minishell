@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validate_tokens.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 14:29:13 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/28 11:08:38 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/15 11:34:25 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,19 @@ void	token_sequence(t_token *tokens)
 				head = head->next;
 			}
 		}
+		head = head->next;
+	}
+	head = tokens;
+	while (head)
+	{
+		if (head->type == LESSER || head->type == GREATER || head->type == APPEND)
+			if (head->next)
+			{
+				head = head->next;
+				head->type = ARGUMENT;
+				if (head->next && !(head->next->type == LESSER || head->next->type == GREATER || head->next->type == APPEND || head->next->type == PIPE))
+					head->next->type = COMMAND;
+			}
 		head = head->next;
 	}
 }
