@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:21:36 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/14 23:11:39 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/16 16:32:34 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	repl(t_shell *shell);
 void	debug(t_token *token, int number_of_commands);
 void	clean(t_shell *shell);
 void	token_sequence(t_token *tokens);
+void	clean_and_exit(t_shell *shell);
 void	expand(char ***matrix, t_env *env);
 void	init_shell(t_shell *shell, char **env);
 void	identify_tokens(t_token *tokens, char *path);

@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:02:03 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/14 22:30:59 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:48:12 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,11 @@ bool	ft_isalnum(int c);
 bool	ft_isalpha(int c);
 bool	ft_isascii(int c);
 bool	ft_isspace(int c);
+bool	all_spaces(char *str);
 bool	in_range(int n, int min, int max);
 bool	contains_char(char *str, char *set);
 
+void	ft_free(char **ptr);
 void	*safe_malloc(size_t size);
 void	free_matrix(char **matrix);
 void	ft_bzero(void *s, size_t n);
