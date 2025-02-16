@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:55:56 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/16 14:48:11 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/16 15:51:40 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ char	**split_input(char *input, t_shell *shell)
 			matrix[y++] = extract_operator(&input);
 		else if (ft_isalnum(*input) || *input == '_' || *input == '/' \
 		|| *input == '.' || *input == '-' || *input == '~' || 
-		*input == ';' || *input == '.' || *input == ',')
+		*input == ';' || *input == '.' || *input == ',' || *input == '\\')
 			matrix[y++] = extract_command(&input);
 		else if (*input == '$')
 			matrix[y++] = extract_variable(&input);

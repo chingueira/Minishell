@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokens.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 13:34:10 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/28 11:25:07 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/16 17:23:38 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_token	*new_token(char *value, t_type type, t_group_type group_type)
 	t_token	*new_token;
 
 	new_token = safe_malloc(sizeof(t_token));
-	new_token->value = value;
+	new_token->value = ft_strdup(value);
 	new_token->type = type;
 	new_token->group_type = group_type;
 	new_token->next = NULL;

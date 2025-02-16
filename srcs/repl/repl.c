@@ -6,21 +6,31 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/14 23:03:48 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/16 18:50:15 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	read_input(t_shell *shell)
+static bool	read_input(t_shell *shell)
 {
-	shell->input = ft_strtrim(readline("minishell$ "), " ");
-	if (!shell->input)
+	char	*raw_input;
+	raw_input = readline("minishell$ ");
+	if (!raw_input)
 	{
-		ft_putstr_fd("Error: Empty prompt\n", 2);
-		shell->flag = false;
+		ft_putstr_fd("exit\n", 2);
+		exit(0);
 	}
-	add_history(shell->input);
+	if (*raw_input)
+		add_history(raw_input);
+	if (all_spaces(raw_input))
+	{
+		free(raw_input);
+		return (false);
+	}
+	shell->input = ft_strtrim(raw_input, " \t\n");
+	free(raw_input);
+	return (true);
 }
 
 static void	parse(t_shell *shell)
@@ -195,12 +205,25 @@ void	get_pipes(t_shell *shell)
 	tmp_cmd->next = NULL; 
 }
 
+void	signal_handler(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+}
 
 void	repl(t_shell *shell)
 {
 	while (1)
 	{
-		read_input(shell);
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, signal_handler);
+		if (!read_input(shell))
+			continue ;
 		parse(shell);
 		// if (pipe_check(shell))
 		// 	exec_pipe(shell);

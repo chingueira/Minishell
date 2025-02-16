@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_document.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:56:07 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/11 12:07:02 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/16 17:31:19 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void	here_doc(char *str)
 		write(fd, "\n", 1);
 		free(input);
 	}
+	free(delimeter);
 	close(fd);
 }
 

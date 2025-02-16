@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:41:10 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/29 09:03:52 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/16 18:46:07 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,5 +67,8 @@ void	ft_export(t_env *env, t_token *token)
 		add_env(&env, temp);
 		head = head->next;
 	}
+	// ft_free(&temp->name);
+	// ft_free(&temp->value);
+	// ft_free(&temp);
 	printf("\nfrom built-ins\n");
 }

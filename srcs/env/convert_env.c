@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   convert_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:32:49 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/16 13:03:09 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/16 18:48:52 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,78 @@ t_env	*convert_env(char **env)
 	return (list);
 }
 
+static void	free_env(t_env *head)
+{
+	t_env	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		ft_free(&head->name);
+		ft_free(&head->value);
+		if (head)
+		{
+			free(head);
+			head = NULL;
+		}
+		head = tmp;
+	}
+}
+
+static void free_tokens(t_token *head)
+{
+	t_token	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		ft_free(&head->value);
+		if (head)
+		{
+			free(head);
+			head = NULL;
+		}
+		head = tmp;
+	}
+}
+
+void	free_cmds(t_command *head)
+{
+	t_command	*tmp;
+
+	while (head)
+	{
+		tmp = head->next;
+		ft_free(&head->command);
+		free_matrix(head->args);
+		ft_free(&head->path);
+		if (head)
+		{
+			free(head);
+			head = NULL;
+		}
+		head = tmp;
+	}
+}
+
+void	clean_and_exit(t_shell *shell)
+{
+	free_env(shell->env);
+	ft_free(&shell->input);
+	free_tokens(shell->token);
+	free_matrix(shell->matrix);
+	free_cmds(shell->command_groups);
+	ft_free(&shell->path);
+	rl_clear_history();
+	ft_free(&shell->current_dir);
+	// ft_free(&shell->pipe->ev);
+	// ft_free(&shell->pipe);
+	// free_matrix(shell->anv);
+	exit(0);
+}
+
+//find allocated variables that where copied, and free them
+
 char	*get_path(t_env *env)
 {
 	t_env *tmp;
@@ -45,7 +117,7 @@ char	*get_path(t_env *env)
 	while (tmp)
 	{
 		if (ft_strcmp(tmp->name, "PATH") == 0)
-			return (tmp->value);
+			return (ft_strdup(tmp->value));
 		tmp = tmp->next;
 	}
 	return (NULL);

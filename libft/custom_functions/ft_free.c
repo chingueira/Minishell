@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/11 13:22:46 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/16 16:54:25 by welepy           ###   ########.fr       */
+/*   Created: 2025/02/16 16:44:50 by welepy            #+#    #+#             */
+/*   Updated: 2025/02/16 18:48:09 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../libft.h"
 
-#include "../inc/minishell.h"
-
-int	main(int ac, char **av, char **environment)
+void	ft_free(char **ptr)
 {
-	t_shell	shell;
-
-	if (ac != 1)
-		print_error("Error: too many arguments", NULL);
-	init_shell(&shell, environment);
-	repl(&shell);
-	clean_and_exit(&shell);
-	(void)av;
-	return (0);
+	if (*ptr)
+		free(*ptr);
+	*ptr = NULL;
 }
