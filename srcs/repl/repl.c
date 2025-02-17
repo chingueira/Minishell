@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/16 18:50:15 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/17 15:11:21 by marcsilv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static bool	read_input(t_shell *shell)
 		return (false);
 	}
 	shell->input = ft_strtrim(raw_input, " \t\n");
-	free(raw_input);
+	ft_free(&raw_input);
 	return (true);
 }
 

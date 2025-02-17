@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 22:52:26 by welepy            #+#    #+#             */
-/*   Updated: 2025/02/14 23:37:00 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/17 15:32:15 by marcsilv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,6 @@ void	execute(t_shell *shell)
 		exec_builtins(shell);
 	else if (tmp->type == COMMAND)
 		exec_cmd(shell);
+	ft_free(&shell->input);
 
 }
