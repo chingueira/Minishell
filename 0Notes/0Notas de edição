@@ -13,3 +13,5 @@ testar a sequencia de tokens
 testar com e sem aspas todos os comandos
 mudar a tokenizacao para mandar sem aspas os argumentos
 fix cd -
+
+fix quotes to not interpret meta characters, the "" (double quote) should intepret the $ (dollar sign) and the ` (backtick) as a normal character

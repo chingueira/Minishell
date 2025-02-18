@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 22:52:26 by welepy            #+#    #+#             */
-/*   Updated: 2025/02/18 07:42:16 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:18:17 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,11 @@ void	execute(t_shell *shell)
 	t_token *tmp;
 
 	tmp = shell->token;
-	if (is_builtin(tmp->type))
+	if (is_builtin(tmp->type) || tmp->type == SINGLE_QUOTE ||
+			tmp->type == DOUBLE_QUOTE)
 		exec_builtins(shell);
-	else if (tmp->type == COMMAND || tmp->type == PATH)
+	else if (tmp->type == COMMAND || tmp->type == PATH ||
+			tmp->type == SINGLE_QUOTE || tmp->type == DOUBLE_QUOTE)
 		exec_cmd(shell);
 	clean_execution(shell);
 }

@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:21:36 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/18 07:41:39 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/18 12:20:35 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <errno.h>
 # include <fcntl.h>
 
+
+void	id_quotes(t_token *tokens);
 
 // ----------------- Redirections & Here Document -------------------/
 

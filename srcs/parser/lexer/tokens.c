@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 13:34:10 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/16 17:23:38 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/18 18:53:53 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,8 +225,8 @@ void	identify_tokens(t_token *tokens, char *path)
 		}
 		head = head->next;
 	}
-	if (tokens->type == ARGUMENT)
-		printf("%s: command not found\n", tokens->value);
+	// if (tokens->type == ARGUMENT)
+	// 	printf("%s: command not found\n", tokens->value);
 }
 
 

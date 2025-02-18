@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/18 07:24:12 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:54:06 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	parse(t_shell *shell)
 		return ;
 	}
 	identify_tokens(shell->token, shell->path);
-	token_sequence(shell->token);												//verify token sequence
+	token_sequence(shell->token);
 	shell->number_of_commands = number_of_commands(shell->token);
 	shell->flag = true;
 }
@@ -99,17 +99,17 @@ void	exec_cmd(t_shell *shell)
 	size = 0;
 	while (tmp)
 	{
-		options[size++] = tmp->value;
+		options[size++] = remove_quotes(tmp->value);
 		tmp = tmp->next;
 	}
 	options[size] = NULL;
 	if (shell->token->type == PATH)
-		pat = shell->token->value;
+		pat = remove_quotes(shell->token->value);
 	else
-		pat = cmd_path(shell->token->value, shell->path);
+		pat = cmd_path(remove_quotes(shell->token->value), shell->path);
 	if (!pat)
 	{
-		fprintf(stderr, "Command not found: %s\n", shell->token->value);
+		fprintf(stderr, "Command not found: %s\n", remove_quotes(shell->token->value));
 		free(options);
 		return ;
 	}
@@ -128,8 +128,8 @@ void	exec_cmd(t_shell *shell)
 		}
 	}
 	waitpid(id, NULL, 0);
-	free(pat);
-	free(options);
+	ft_free(&pat);
+	free_matrix(options);
 }
 
 void	exec_builtins(t_shell *shell)
@@ -233,6 +233,6 @@ void	repl(t_shell *shell)
 		// 	exec_pipe(shell);
 		// else
 		execute(shell);
-		// debug(shell->token, shell->number_of_commands)
+		// debug(shell->token, shell->number_of_commands);
 	}
 }
