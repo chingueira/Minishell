@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/17 15:11:21 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/18 07:24:12 by marcsilv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,10 @@ void	exec_cmd(t_shell *shell)
 		tmp = tmp->next;
 	}
 	options[size] = NULL;
-	pat = cmd_path(shell->token->value, shell->path);
+	if (shell->token->type == PATH)
+		pat = shell->token->value;
+	else
+		pat = cmd_path(shell->token->value, shell->path);
 	if (!pat)
 	{
 		fprintf(stderr, "Command not found: %s\n", shell->token->value);
@@ -125,6 +128,7 @@ void	exec_cmd(t_shell *shell)
 		}
 	}
 	waitpid(id, NULL, 0);
+	free(pat);
 	free(options);
 }
 

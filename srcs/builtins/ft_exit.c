@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 15:32:38 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/16 16:34:24 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/18 07:36:16 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ void	ft_exit(t_shell *shell, t_token *token)
 		return ;
 	}
 	printf("\nfrom built-ins\n");
-	clean_and_exit(shell);
+	clean_or_exit(shell, true);
 }

@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 22:52:26 by welepy            #+#    #+#             */
-/*   Updated: 2025/02/17 15:32:15 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/18 07:42:16 by marcsilv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,13 @@ void	debug_commands(t_command *command_groups)
 	}
 }
 
+static void clean_execution(t_shell *shell)
+{
+	ft_free(&shell->input);
+	free_matrix(shell->matrix);
+	free_tokens(shell->token);
+}
+
 void	execute(t_shell *shell)
 {
 	t_token *tmp;
@@ -58,8 +65,7 @@ void	execute(t_shell *shell)
 	tmp = shell->token;
 	if (is_builtin(tmp->type))
 		exec_builtins(shell);
-	else if (tmp->type == COMMAND)
+	else if (tmp->type == COMMAND || tmp->type == PATH)
 		exec_cmd(shell);
-	ft_free(&shell->input);
-
+	clean_execution(shell);
 }

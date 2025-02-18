@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:22:46 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/16 16:54:25 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/18 07:36:28 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int ac, char **av, char **environment)
 		print_error("Error: too many arguments", NULL);
 	init_shell(&shell, environment);
 	repl(&shell);
-	clean_and_exit(&shell);
+	clean_or_exit(&shell, true);
 	(void)av;
 	return (0);
 }
