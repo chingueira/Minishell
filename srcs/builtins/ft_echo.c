@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:18:05 by mchingi           #+#    #+#             */
-/*   Updated: 2025/01/29 09:08:04 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/19 15:34:55 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,8 @@ static bool	is_valid_option(char *value)
 {
 	int	i;
 
-	// Check if the string starts with '-'
 	if (value[0] != '-')
 		return (false);
-
-	// Check if all characters after '-' are 'n'
 	i = 1;
 	while (value[i])
 	{
@@ -28,57 +25,63 @@ static bool	is_valid_option(char *value)
 			return (false);
 		i++;
 	}
-
 	return (true);
 }
 
-static bool	echo_aux(t_token *token, bool *option)
+static bool	check_input(char *input)
+{
+	char *single_q;
+	char *double_q;
+
+	single_q = ft_strchr(input, '\'');
+	double_q = ft_strchr(input, '\"');
+	if (single_q)
+	{
+		single_q--;
+		if (!ft_isspace(*single_q))
+			return (true);
+	}
+	else if (double_q)
+	{
+		double_q--;
+		if (!ft_isspace(*double_q))
+			return (true);
+	}
+	return false;
+}
+
+static bool	echo_aux(t_token *token, bool *option, char *input)
 {
 	t_token	*temp;
 	t_token	*temp2;
 	bool	is_first_argument = true;
-
+	bool	previous_char = check_input(input);
 	temp = token;
 
-	// Handle valid options (e.g., "-n", "-nnnnn")
 	while (temp && temp->type == OPTION && is_valid_option(temp->value))
 	{
 		*option = true;
 		temp = temp->next;
 	}
-
-	// Convert invalid options and subsequent ones to arguments
 	temp2 = temp;
 	while (temp2 && temp2->type == OPTION)
 	{
 		temp2->type = ARGUMENT;
 		temp2 = temp2->next;
 	}
-
-	// Handle arguments and quotes
 	while (temp && (temp->type == ARGUMENT || temp->type == SINGLE_QUOTE || temp->type == DOUBLE_QUOTE))
 	{
-		// Print space between arguments
-		if (!is_first_argument)
+		if (!is_first_argument && !previous_char)
 			printf(" ");
 		is_first_argument = false;
-
-		// Print argument, ignoring quotes
-		int i = 0;
-		while (temp->value[i])
-		{
-			if (temp->value[i] != '\'' && temp->value[i] != '\"')
-				printf("%c", temp->value[i]);
-			i++;
-		}
+		printf("%s", remove_quotes(temp->value));
 
 		temp = temp->next;
 	}
-
 	return (*option);
 }
 
-void	ft_echo(t_token *token)
+void	ft_echo(t_token *token, t_shell *shell)
 {
 	bool	option = false;
 
@@ -89,7 +92,7 @@ void	ft_echo(t_token *token)
 		return ;
 	}
 
-	option = echo_aux(token, &option);
+	option = echo_aux(token, &option, shell->input);
 
 	// Print newline unless -n option was used
 	if (!option)

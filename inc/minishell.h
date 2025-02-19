@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:21:36 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/18 12:20:35 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:35:55 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		check_doc(char *input);
 //------------------- Builtins --------------------/
 void	ft_pwd(t_token *token);
 void	ft_exit(t_shell *shell, t_token *token);
-void	ft_echo(t_token *token);
+void	ft_echo(t_token *token, t_shell *shell);
 void	ft_cd(t_token *current);
 void	ft_exit(t_shell *shell, t_token *token);
 void	ft_unset(t_env *env, t_token *token);
