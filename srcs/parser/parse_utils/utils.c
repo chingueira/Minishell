@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:03:41 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/16 14:22:15 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:56:21 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,38 @@ int	count_char(char *input, char c)
 
 bool	validate_quote_number(char *input)
 {
-	int	count_single;
-	int	count_double;
+	char	*single_q;
+	char	*double_q;
 
-	count_single = count_char(input, '\'');
-	count_double = count_char(input, '\"');
-	if (count_single % 2 || count_double % 2)
-		return (false);
+	single_q = ft_strchr(input, '\'');
+	double_q = ft_strchr(input, '\"');
+	if (single_q && double_q)
+	{
+		if (single_q < double_q)
+		{
+			single_q++;
+			if (!ft_strchr(single_q, '\''))
+				return (false);
+		}
+		else
+		{
+			double_q++;
+			if (!ft_strchr(double_q, '\"'))
+				return (false);
+		}
+	}
+	else if (!single_q && double_q)
+	{
+		double_q++;
+		if (!ft_strchr(double_q, '\"'))
+			return (false);
+	}
+	else if (!double_q && single_q)
+	{
+		single_q++;
+		if (!ft_strchr(single_q, '\''))
+			return (false);
+	}
 	return (true);
 }
 
