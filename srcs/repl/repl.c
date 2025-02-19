@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/18 18:54:06 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:35:31 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ void	exec_cmd(t_shell *shell)
 	size = 0;
 	while (tmp)
 	{
-		options[size++] = remove_quotes(tmp->value);
+		options[size++] = ft_strdup(remove_quotes(tmp->value));
 		tmp = tmp->next;
 	}
 	options[size] = NULL;
@@ -109,7 +109,7 @@ void	exec_cmd(t_shell *shell)
 		pat = cmd_path(remove_quotes(shell->token->value), shell->path);
 	if (!pat)
 	{
-		fprintf(stderr, "Command not found: %s\n", remove_quotes(shell->token->value));
+		ft_fprintf(2, "Command not found: %s\n", remove_quotes(shell->token->value));
 		free(options);
 		return ;
 	}
@@ -141,7 +141,7 @@ void	exec_builtins(t_shell *shell)
 		if (tmp->type == ECHO)
 		{
 			tmp = tmp->next;
-			ft_echo(tmp);
+			ft_echo(tmp, shell);
 		}
 		else if (tmp->type == EXIT)
 		{
