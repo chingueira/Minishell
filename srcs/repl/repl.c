@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/19 15:35:31 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/20 12:45:13 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ void	exec_cmd(t_shell *shell)
 	if (!pat)
 	{
 		ft_fprintf(2, "Command not found: %s\n", remove_quotes(shell->token->value));
-		free(options);
+		free_matrix(options);
+		ft_free(&pat);
 		return ;
 	}
 	id = fork();
