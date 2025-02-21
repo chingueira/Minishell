@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:18:05 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/19 15:34:55 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/20 16:01:11 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ static bool	is_valid_option(char *value)
 	int	i;
 
 	if (value[0] != '-')
+		return (false);
+	if (value[1] == '\0')
 		return (false);
 	i = 1;
 	while (value[i])
@@ -58,7 +60,7 @@ static bool	echo_aux(t_token *token, bool *option, char *input)
 	bool	previous_char = check_input(input);
 	temp = token;
 
-	while (temp && temp->type == OPTION && is_valid_option(temp->value))
+	while (temp && temp->type == OPTION && is_valid_option(remove_quotes(temp->value)))
 	{
 		*option = true;
 		temp = temp->next;
@@ -88,15 +90,10 @@ void	ft_echo(t_token *token, t_shell *shell)
 	if (!token)
 	{
 		write(1, "\n", 1);
-		printf("\nfrom built-ins\n");
 		return ;
 	}
-
-	option = echo_aux(token, &option, shell->input);
-
-	// Print newline unless -n option was used
+	option = echo_aux(token, &option, remove_quotes(shell->input));
 	if (!option)
 		printf("\n");
-	printf("\nfrom built-ins\n");
 }
 
