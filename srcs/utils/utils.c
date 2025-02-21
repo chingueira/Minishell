@@ -6,11 +6,22 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 20:43:34 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/18 18:53:57 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/21 16:17:35 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static void	option_helper(t_token *head)
+{
+	char	*tmp;
+
+	tmp = ft_strdup(head->value);
+	ft_free(&head->value);
+	head->value = ft_strdup(remove_quotes(tmp));
+	head->type = OPTION;
+	ft_free(&tmp);
+}
 
 void	id_quotes(t_token *tokens)
 {
@@ -24,17 +35,19 @@ void	id_quotes(t_token *tokens)
 			if (ft_strncmp(head->value + 1, "echo", ft_strlen(head->value) - 2) == 0)
 				head->type = ECHO;
 			else if (ft_strncmp(head->value + 1, "exit", ft_strlen(head->value) - 2) == 0)
-			head->type = EXIT;
+				head->type = EXIT;
 			else if (ft_strncmp(head->value + 1, "cd", ft_strlen(head->value) - 2) == 0)
-			head->type = CD;
+				head->type = CD;
 			else if (ft_strncmp(head->value + 1, "env", ft_strlen(head->value) - 2) == 0)
-			head->type = ENV;
+				head->type = ENV;
 			else if (ft_strncmp(head->value + 1, "export", ft_strlen(head->value) - 2) == 0)
-			head->type = EXPORT;
+				head->type = EXPORT;
 			else if (ft_strncmp(head->value + 1, "unset", ft_strlen(head->value) - 2) == 0)
-			head->type = UNSET;
+				head->type = UNSET;
 			else if (ft_strncmp(head->value + 1, "pwd", ft_strlen(head->value) - 2) == 0)
-			head->type = PWD;
+				head->type = PWD;
+			else if ((head->value[1] == '-'))
+				option_helper(head);
 		}
 		head = head->next;
 	}
