@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 13:21:36 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/19 15:35:55 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/21 16:52:18 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	ft_cd(t_token *current);
 void	ft_exit(t_shell *shell, t_token *token);
 void	ft_unset(t_env *env, t_token *token);
 void	ft_export(t_env *env, t_token *token);
-void	ft_env(t_env *env, t_token *token);
+void	ft_env(t_env *env, t_token *token, bool declare);
 
 char	*get_path(t_env *env);
 char	*cmd_path(char *cmd, char *pat);
@@ -56,10 +56,11 @@ char	*TokenKindString(t_type type);
 char	*extract_variable(char **input);
 char	*GroupKindString(t_group_type type);
 char	*fill_quote(char **input, char quote, int i);
-
 bool	validate_quote_number(char *input);
 bool	extract_operator_util(char **input);
 bool	is_command(char *value, char *path);
+
+char	**env_to_matrix(t_env *env);
 
 void	repl(t_shell *shell);
 void	debug(t_token *token, int number_of_commands);
