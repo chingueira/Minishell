@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:55:56 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/16 15:51:40 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/20 18:55:18 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*extract_command(char **input)
 
 	i = 0;
 	while (**input && !ft_isspace(**input) && \
-	!ft_strchr("|<>«»&*", **input))
+	!ft_strchr("|<>«»&*", **input) && **input != '\'' && **input != '\"')
 	{
 		i++;
 		(*input)++;
@@ -80,9 +80,9 @@ static char	*extract_quote(char **input)
 			break ;*/
 		if (**input == quote)
 		{
-			if (*(*input + 1) == quote)
-				(*input)++;
-			else
+			// if (*(*input + 1) == quote)
+			// 	(*input)++;
+			// else
 				break ;
 		}
 		(*input)++;
@@ -123,5 +123,5 @@ char	**split_input(char *input, t_shell *shell)
 	}
 	matrix[y] = NULL;
 	return (matrix);
-}										//divide o input em uma matriz de strings
-										// a ordem de interpretação é importante
+}
+
