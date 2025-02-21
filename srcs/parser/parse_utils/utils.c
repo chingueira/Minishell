@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:03:41 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/19 14:56:21 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/20 14:45:41 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,39 +28,35 @@ int	count_char(char *input, char c)
 
 bool	validate_quote_number(char *input)
 {
-	char	*single_q;
-	char	*double_q;
+    int	single_quote_count = 0;
+    int	double_quote_count = 0;
 
-	single_q = ft_strchr(input, '\'');
-	double_q = ft_strchr(input, '\"');
-	if (single_q && double_q)
-	{
-		if (single_q < double_q)
-		{
-			single_q++;
-			if (!ft_strchr(single_q, '\''))
-				return (false);
-		}
-		else
-		{
-			double_q++;
-			if (!ft_strchr(double_q, '\"'))
-				return (false);
-		}
-	}
-	else if (!single_q && double_q)
-	{
-		double_q++;
-		if (!ft_strchr(double_q, '\"'))
-			return (false);
-	}
-	else if (!double_q && single_q)
-	{
-		single_q++;
-		if (!ft_strchr(single_q, '\''))
-			return (false);
-	}
-	return (true);
+    while (*input)
+    {
+        if (*input == '\'')
+        {
+            single_quote_count++;
+            input++;
+            while (*input && *input != '\'')
+                input++;
+            if (*input == '\'')
+                single_quote_count++;
+        }
+        else if (*input == '\"')
+        {
+            double_quote_count++;
+            input++;
+            while (*input && *input != '\"')
+                input++;
+            if (*input == '\"')
+                double_quote_count++;
+        }
+        if (*input)
+            input++;
+    }
+    if (single_quote_count % 2 != 0 || double_quote_count % 2 != 0)
+        return (false);
+    return (true);
 }
 
 int	word_count_util(char *i, int count)
