@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 22:52:26 by welepy            #+#    #+#             */
-/*   Updated: 2025/02/18 12:18:17 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/21 17:23:14 by marcsilv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 bool	pipe_check(t_shell *shell)
 {
-	t_token *tmp = shell->token;
+	t_token	*tmp;
+
+	tmp = shell->token;
 	while (tmp)
 	{
 		if (tmp->type == PIPE)
@@ -33,13 +35,17 @@ bool	pipe_check(t_shell *shell)
 
 void	debug_commands(t_command *command_groups)
 {
-	t_command *tmp = command_groups;
-	int i = 0;
+	t_command	*tmp;
+	int			j;
+	int			i;
+
+	i = 0;
+	j = 0;
+	tmp = command_groups;
 	while (tmp)
 	{
 		printf("Command %d: %s\n", i, tmp->command);
 		printf("Args: ");
-		int j = 0;
 		while (tmp->args[j])
 		{
 			printf("%s ", tmp->args[j]);
@@ -51,7 +57,7 @@ void	debug_commands(t_command *command_groups)
 	}
 }
 
-static void clean_execution(t_shell *shell)
+static void	clean_execution(t_shell *shell)
 {
 	ft_free(&shell->input);
 	free_matrix(shell->matrix);
@@ -60,14 +66,14 @@ static void clean_execution(t_shell *shell)
 
 void	execute(t_shell *shell)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = shell->token;
-	if (is_builtin(tmp->type) || tmp->type == SINGLE_QUOTE ||
-			tmp->type == DOUBLE_QUOTE)
+	if (is_builtin(tmp->type) || tmp->type == SINGLE_QUOTE
+		|| tmp->type == DOUBLE_QUOTE)
 		exec_builtins(shell);
-	else if (tmp->type == COMMAND || tmp->type == PATH ||
-			tmp->type == SINGLE_QUOTE || tmp->type == DOUBLE_QUOTE)
+	else if (tmp->type == COMMAND || tmp->type == PATH
+		|| tmp->type == SINGLE_QUOTE || tmp->type == DOUBLE_QUOTE)
 		exec_cmd(shell);
 	clean_execution(shell);
 }
