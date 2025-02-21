@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/20 12:45:13 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/21 17:28:54 by marcsilv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 static bool	read_input(t_shell *shell)
 {
 	char	*raw_input;
-	raw_input = readline("minishell$ ");
+
+	raw_input = readline("[welepy@archlinux Minishell]$ ");
 	if (!raw_input)
 	{
 		ft_putstr_fd("exit\n", 2);
@@ -35,6 +36,7 @@ static bool	read_input(t_shell *shell)
 
 static void	parse(t_shell *shell)
 {
+	shell->flag = true;
 	shell->matrix = split_input(shell->input, shell);
 	if (!shell->matrix)
 	{
@@ -51,19 +53,18 @@ static void	parse(t_shell *shell)
 	identify_tokens(shell->token, shell->path);
 	token_sequence(shell->token);
 	shell->number_of_commands = number_of_commands(shell->token);
-	shell->flag = true;
 }
 
 char	*cmd_path(char *cmd, char *pat)
 {
-	char **paths;
-	char *path;
-	int	i;
-	char *tmp;
+	char	**paths;
+	char	*path;
+	int		i;
+	char	*tmp;
 
 	i = 0;
 	paths = ft_split(pat, ':');
-	while(paths[i])
+	while (paths[i])
 	{
 		tmp = ft_strjoin(paths[i], "/");
 		path = ft_strjoin(tmp, cmd);
@@ -78,17 +79,46 @@ char	*cmd_path(char *cmd, char *pat)
 	}
 	if (paths)
 		free_matrix(paths);
-	return(NULL);
+	return (NULL);
+}
+
+char	**env_to_matrix(t_env *env)
+{
+	t_env	*tmp;
+	char	**matrix;
+	int		i;
+
+	tmp = env;
+	i = 0;
+	while (tmp)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	matrix = malloc(sizeof(char *) * (i + 1));
+	tmp = env;
+	i = 0;
+	while (tmp)
+	{
+		matrix[i] = ft_strjoin(tmp->name, "=");
+		matrix[i] = ft_strjoin(matrix[i], tmp->value);
+		tmp = tmp->next;
+		i++;
+	}
+	matrix[i] = NULL;
+	return (matrix);
 }
 
 void	exec_cmd(t_shell *shell)
 {
 	char	*pat;
 	char	**options;
-	t_token	*tmp = shell->token;
-	int	size = 0;
+	t_token	*tmp;
+	int		size;
 	pid_t	id;
 
+	size = 0;
+	tmp = shell->token;
 	while (tmp)
 	{
 		tmp = tmp->next;
@@ -122,7 +152,7 @@ void	exec_cmd(t_shell *shell)
 	}
 	if (id == 0)
 	{
-		if (execve(pat, options, shell->anv) == -1)
+		if (execve(pat, options, env_to_matrix(shell->env)) == -1)
 		{
 			perror("execve");
 			exit(EXIT_FAILURE);
@@ -147,12 +177,12 @@ void	exec_builtins(t_shell *shell)
 		else if (tmp->type == EXIT)
 		{
 			tmp = tmp->next;
-			ft_exit(shell, shell->token);
+			ft_exit(shell, tmp);
 		}
 		else if (tmp->type == PWD)
 		{
 			tmp = tmp->next;
-			ft_pwd(shell->token);
+			ft_pwd(tmp);
 		}
 		else if (tmp->type == CD)
 		{
@@ -163,7 +193,7 @@ void	exec_builtins(t_shell *shell)
 		else if (tmp->type == ENV)
 		{
 			tmp = tmp->next;
-			ft_env(shell->env, shell->token);
+			ft_env(shell->env, tmp, false);
 		}
 		else if (tmp->type == EXPORT)
 		{
@@ -194,7 +224,8 @@ void	get_pipes(t_shell *shell)
 			tmp_cmd->args = malloc(sizeof(char *) * (count_args(tmp_token) + 1));
 			i = 0;
 		}
-		else if (tmp_token->type == ARGUMENT || tmp_token->type == DOUBLE_QUOTE || tmp_token->type == SINGLE_QUOTE || tmp_token->type == OPTION)
+		else if (tmp_token->type == ARGUMENT || tmp_token->type == DOUBLE_QUOTE 
+				|| tmp_token->type == SINGLE_QUOTE || tmp_token->type == OPTION)
 			tmp_cmd->args[i++] = clean_string(tmp_token->value);
 		else if (tmp_token->type == PIPE)
 		{
@@ -230,10 +261,14 @@ void	repl(t_shell *shell)
 		if (!read_input(shell))
 			continue ;
 		parse(shell);
-		// if (pipe_check(shell))
-		// 	exec_pipe(shell);
-		// else
-		execute(shell);
+		if (shell->flag)
+			execute(shell);
+		else
+		{
+			free_matrix(shell->matrix);
+			ft_free(&shell->input);
+			free_tokens(shell->token);
+		}
 		// debug(shell->token, shell->number_of_commands);
 	}
 }
