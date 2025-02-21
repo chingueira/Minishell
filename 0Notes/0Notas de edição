@@ -15,3 +15,5 @@ mudar a tokenizacao para mandar sem aspas os argumentos
 fix cd -
 
 fix quotes to not interpret meta characters, the "" (double quote) should intepret the $ (dollar sign) and the ` (backtick) as a normal character
+
+there is a tokenizing problem
