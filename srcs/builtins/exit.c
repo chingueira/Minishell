@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safe_malloc.c                                      :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/11 13:39:48 by marcsilv          #+#    #+#             */
-/*   Updated: 2024/11/12 14:04:23 by welepy           ###   ########.fr       */
+/*   Created: 2025/02/14 15:49:03 by mchingi           #+#    #+#             */
+/*   Updated: 2025/02/15 16:34:22 by mchingi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft.h"
+# include "../../inc/minihell.h"
 
-void	*safe_malloc(size_t size)
+// Claramente falta muito
+
+void	ft_exit(t_shell *shell)
 {
-	void	*ptr;
-
-	ptr = malloc(size);
-	if (!ptr)
-	{
-		ft_putendl_fd("Malloc failed", 2);
-		exit(EXIT_FAILURE);
-	}
-	return (ptr);
+	printf("\nfrom builtins\n");
+	free(shell);
+	exit(EXIT_SUCCESS);
 }

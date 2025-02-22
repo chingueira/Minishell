@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_matrix.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 14:30:54 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/16 18:49:49 by welepy           ###   ########.fr       */
+/*   Updated: 2024/11/13 10:25:03 by marcsilv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,8 @@ void	free_matrix(char **matrix)
 	i = 0;
 	while (matrix[i])
 	{
-		ft_free(&matrix[i]);
+		free(matrix[i]);
 		i++;
 	}
-	if (matrix)
-	{
-		free(matrix);
-		matrix = NULL;
-	}
+	free(matrix);
 }

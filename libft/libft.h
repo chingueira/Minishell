@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/14 14:02:03 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/16 18:48:12 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/15 18:26:59 by mchingi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <errno.h>
 # include <stdarg.h>
 # include "./lists/ft_list.h"
-# include "../inc/minishell.h"
+# include "../inc/minihell.h"
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -37,12 +37,7 @@
 # define ALL "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 typedef struct s_list	t_list;
-
-typedef struct s_garbage
-{
-	void	*data;
-	struct s_garbage	*next;
-}	t_garbage;
+typedef struct s_shell	t_generic;
 
 int		ft_abs(int n);
 int		numlen(int n);
@@ -75,17 +70,16 @@ bool	ft_isalnum(int c);
 bool	ft_isalpha(int c);
 bool	ft_isascii(int c);
 bool	ft_isspace(int c);
-bool	all_spaces(char *str);
 bool	in_range(int n, int min, int max);
 bool	contains_char(char *str, char *set);
 
-void	ft_free(char **ptr);
 void	*safe_malloc(size_t size);
 void	free_matrix(char **matrix);
 void	ft_bzero(void *s, size_t n);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putendl_fd(char *s, int fd);
+void	clean_and_exit(t_generic *data);
 void	ft_putstr_fd(const char *s, int fd);
 void	*ft_realloc(void *ptr, size_t size);
 void	*ft_memset(void *s, int c, size_t n);

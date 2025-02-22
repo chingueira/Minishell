@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: welepy <welepy@student.42.fr>              +#+  +:+       +#+         #
+#    By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/23 01:14:20 by marcsilv          #+#    #+#              #
-#    Updated: 2025/02/16 16:45:26 by welepy           ###   ########.fr        #
+#    Updated: 2025/01/16 12:12:46 by marcsilv         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,8 @@ PRINTF      =   ./custom_functions/prints/ft_put.c           \
                 ./custom_functions/ft_fprintf/ft_fprintf.c
 
 CUSTOM      =   ./custom_functions/ft_split.c                \
-                ./custom_functions/all_spaces.c             \
-                ./custom_functions/ft_free.c                \
-                ./custom_functions/get_next_line.c         
+                ./custom_functions/get_next_line.c          \
+                ./custom_functions/clean_and_exit.c
 
 CUSTOM_     =   ./custom_functions/length/numlen.c           \
                 ./custom_functions/length/tablen.c
