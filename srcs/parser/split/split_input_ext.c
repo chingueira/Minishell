@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_input_ext.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 11:52:59 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/16 14:22:23 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:03:58 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*extract_variable(char **input)
 
 	i = 0;
 	(*input)++;
-	while (**input && (ft_isalnum(**input) || **input == '_'))
+	while (**input && (ft_isalnum(**input) || **input == '_' || **input == '?'))
 	{
 		i++;
 		(*input)++;

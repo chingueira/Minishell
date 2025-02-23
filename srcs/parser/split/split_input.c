@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 10:55:56 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/20 18:55:18 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:05:34 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,10 @@ char	**split_input(char *input, t_shell *shell)
 			matrix[y++] = extract_quote(&input);
 		else if (ft_strchr("|<>*&", *input))
 			matrix[y++] = extract_operator(&input);
-		else if (ft_isalnum(*input) || *input == '_' || *input == '/' \
-		|| *input == '.' || *input == '-' || *input == '~' || 
-		*input == ';' || *input == '.' || *input == ',' || *input == '\\')
-			matrix[y++] = extract_command(&input);
 		else if (*input == '$')
 			matrix[y++] = extract_variable(&input);
+		else
+			matrix[y++] = extract_command(&input);
 	}
 	matrix[y] = NULL;
 	return (matrix);
