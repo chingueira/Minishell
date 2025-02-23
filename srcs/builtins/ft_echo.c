@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:18:05 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/20 16:01:11 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:41:55 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,6 @@ void	ft_echo(t_token *token, t_shell *shell)
 	option = echo_aux(token, &option, remove_quotes(shell->input));
 	if (!option)
 		printf("\n");
+	g_exit_status = 0;
 }
 

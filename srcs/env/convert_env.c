@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:32:49 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/18 07:41:21 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:12:30 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	clean_or_exit(t_shell *shell, bool exit_flag)
 	// ft_free(&shell->pipe);
 	// free_matrix(shell->anv);
 	if (exit_flag)
-		exit(0);
+		exit(g_exit_status);
 }
 
 //find allocated variables that where copied, and free them

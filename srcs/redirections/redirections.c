@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 14:25:30 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/11 12:17:12 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/23 14:07:22 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void exec_command(char *command, char **env)
 	if (execve(path, args, env) == -1)
 	{
 		perror("execve");
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 }
 

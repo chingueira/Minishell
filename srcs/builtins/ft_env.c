@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:16:55 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/21 16:35:09 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:43:08 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	ft_env(t_env *env, t_token *token, bool declare)
 	if (token && (token->type == ARGUMENT || token->type == OPTION))
 	{
 		printf("env: this env does not support options or arguments\n");
+		g_exit_status = 1;
 		return ;
 	}
 	while (tmp)
@@ -33,4 +34,5 @@ void	ft_env(t_env *env, t_token *token, bool declare)
 		tmp = tmp->next;
 	}
 	printf("\nfrom built-ins\n");
+	g_exit_status = 0;
 }

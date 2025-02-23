@@ -6,13 +6,13 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 14:41:10 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/21 16:35:47 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:44:48 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static	t_env	*arg_to_env(t_token *token)
+static t_env	*arg_to_env(t_token *token)
 {
 	char	**temp;
 	t_env	*current_env;
@@ -72,5 +72,6 @@ void	ft_export(t_env *env, t_token *token)
 	// ft_free(&temp->name);
 	// ft_free(&temp->value);
 	// ft_free(&temp);
+	g_exit_status = 0;
 	printf("\nfrom built-ins\n");
 }

@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 12:19:22 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/21 17:28:54 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:15:36 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static bool	read_input(t_shell *shell)
 {
 	char	*raw_input;
 
-	raw_input = readline("[welepy@archlinux Minishell]$ ");
+	raw_input = readline("Minishell$ ");
 	if (!raw_input)
 	{
 		ft_putstr_fd("exit\n", 2);
@@ -140,6 +140,7 @@ void	exec_cmd(t_shell *shell)
 	if (!pat)
 	{
 		ft_fprintf(2, "Command not found: %s\n", remove_quotes(shell->token->value));
+		g_exit_status = 127;
 		free_matrix(options);
 		ft_free(&pat);
 		return ;
@@ -148,16 +149,18 @@ void	exec_cmd(t_shell *shell)
 	if (id == -1)
 	{
 		perror("fork");
-		exit(EXIT_FAILURE);
+		exit(-1);
 	}
 	if (id == 0)
 	{
 		if (execve(pat, options, env_to_matrix(shell->env)) == -1)
 		{
 			perror("execve");
-			exit(EXIT_FAILURE);
+			g_exit_status = 127;
+			exit(127);
 		}
 	}
+	g_exit_status = 0;
 	waitpid(id, NULL, 0);
 	ft_free(&pat);
 	free_matrix(options);

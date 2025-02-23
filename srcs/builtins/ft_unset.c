@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:33:18 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/01/29 09:04:06 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/23 15:13:18 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,13 @@ void	ft_unset(t_env *env, t_token *token)
 	t_token	*temp;
 
 	if (!token)
-	{
-		printf("unset: not enough arguments\n");
 		return ;
-	}
 	temp = token;
 	while (temp && temp->type == ARGUMENT)
 	{
 		remove_env(&env, temp->value);
 		temp = temp->next;
 	}
+	g_exit_status = 0;
 	printf("\nfrom built-ins\n");
 }
