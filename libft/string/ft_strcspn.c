@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strcspn.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marcsilv <marcsilv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 19:19:31 by marcsilv          #+#    #+#             */
-/*   Updated: 2024/11/14 20:03:22 by marcsilv         ###   ########.fr       */
+/*   Updated: 2025/02/23 13:13:25 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_strcspn(const char *s, const char *reject)
 
 	i = 0;
 	if (!s || !reject)
-		return (0);
+		return (-1);
 	while (s[i])
 	{
 		j = 0;
