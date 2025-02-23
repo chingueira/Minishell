@@ -6,7 +6,7 @@
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 20:37:07 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/21 16:19:01 by welepy           ###   ########.fr       */
+/*   Updated: 2025/02/23 13:16:11 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,17 @@ void expand(char ***matrix, t_env *env)
 	{
 		if ((*matrix)[y][0] == '$')
 		{
-			value = get_env_value(env, &(*matrix)[y][1]);
+			if ((*matrix)[y][1] == '?')
+			{
+				value = ft_itoa(g_exit_status);
+				free((*matrix)[y]);
+				(*matrix)[y] = ft_strdup(value);
+				free(value);
+			}
+			else
+			{value = get_env_value(env, &(*matrix)[y][1]);
 			free((*matrix)[y]);
-			(*matrix)[y] = ft_strdup(value ? value : "");
+			(*matrix)[y] = ft_strdup(value ? value : "");}
 		}
 		else if (ft_strchr((*matrix)[y], '$') && ((*matrix)[y][0] != '\''))
 		{
