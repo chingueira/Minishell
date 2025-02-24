@@ -2,33 +2,53 @@
 
 char **tokenize_command(t_token *token)
 {
-    int count = 0;
-    t_token *tmp = token;
-    
-    // Count valid tokens
-    while (tmp && (tmp->type == COMMAND || tmp->type == OPTION || tmp->type == ARGUMENT))
+    int i;
+    int count;
+    char **args;
+    t_token *tmp;
+
+    count = 0;
+    tmp = token;
+    while (tmp)
     {
-        count++;
+        if (tmp->type == COMMAND || tmp->type == OPTION || tmp->type == ARGUMENT || tmp->type == DOUBLE_QUOTE  || tmp->type == SINGLE_QUOTE)
+            count++;
+        else if (is_redirection(tmp->type))
+        {
+            tmp = tmp->next;
+            if (tmp)
+                tmp = tmp->next;
+            continue;
+        }
+        else
+            break ;
         tmp = tmp->next;
     }
-
-    // Allocate memory for argument array
-    char **args = malloc(sizeof(char *) * (count + 1));
+    args = malloc(sizeof(char *) * (count + 1));
     if (!args)
         return NULL;
-
-    // Fill argument array
-    int i = 0;
-    while (token && (token->type == COMMAND || token->type == OPTION || token->type == ARGUMENT || token->type == DOUBLE_QUOTE  || token->type == SINGLE_QUOTE))
+    i = 0;
+    while (token)
     {
-        args[i++] = strdup(remove_quotes(token->value));
+        if (token->type == COMMAND || token->type == OPTION || token->type == ARGUMENT || token->type == DOUBLE_QUOTE  || token->type == SINGLE_QUOTE)
+        {
+            args[i++] = strdup(remove_quotes(token->value));
+        }
+        else if (is_redirection(token->type))
+        {
+            token = token->next;
+            if (token)
+                token = token->next;
+            continue;
+        }
+        else
+            break ;
         token = token->next;
     }
+    printf("\n");
     args[i] = NULL;
-
-    return args;
+    return (args);
 }
-
 
 void redirect_input(t_token *token)
 {
@@ -79,7 +99,7 @@ void redirect_here_doc(t_token *token)
 {
 	if (!token || !token->next)
 		return;
-	here_doc(token->next->value);
+    here_doc(token->next->value);
 	int fd = open(".DOC_TMP", O_RDONLY);
 	if (fd == -1)
 	{
@@ -114,7 +134,6 @@ void execute_cmd_in_pipe(t_token *token, t_pipe *pipes, int in, int out)
 
 	if (!token || token->type != COMMAND)
 		return;
-
 	args = tokenize_command(token);
 	path = find_path(args[0], pipes->ev);
 	if (!path)
@@ -134,6 +153,25 @@ void execute_cmd_in_pipe(t_token *token, t_pipe *pipes, int in, int out)
 	}
 	if (execve(path, args, pipes->ev) == -1)
 		error_message("execve");
+}
+
+void	exec_builtins(t_shell *shell, t_token *token)
+{
+/*	if (strcmp(token->value, "echo") == 0)
+		ft_echo(token);
+	else */if (strcmp(token->value, "cd") == 0)
+		ft_cd(token);
+	else if (strcmp(token->value, "pwd") == 0)
+		ft_pwd(token);
+	else if (strcmp(token->value, "env") == 0)
+		ft_env(shell->env, token);
+	else if (strcmp(token->value, "export") == 0)
+		ft_export(shell->env, token);
+	else if (strcmp(token->value, "unset") == 0)
+		ft_unset(shell->env, token);
+	else if (strcmp(token->value, "exit") == 0)
+		ft_exit(shell);
+	printf("\nfrom builtins\n");
 }
 
 void execute_pipe2(t_shell *shell, t_token *tokens)
@@ -170,7 +208,10 @@ void execute_pipe2(t_shell *shell, t_token *tokens)
             if (id == 0)
             {
                 execute_redirections(tokens);
-                execute_cmd_in_pipe(tokens, pipes, pipes->input_fd, cmd_start->type == PIPE ? pipes->pipe_fd[1] : STDOUT_FILENO);
+                if (is_builtin(tokens->type))
+                    exec_builtins(shell, tokens);
+                else
+                    execute_cmd_in_pipe(tokens, pipes, pipes->input_fd, cmd_start->type == PIPE ? pipes->pipe_fd[1] : STDOUT_FILENO);
             }
             if (pipes->input_fd != 0)
                 close(pipes->input_fd);

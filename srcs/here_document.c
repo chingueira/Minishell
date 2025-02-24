@@ -6,7 +6,7 @@
 /*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 10:56:07 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/14 15:33:30 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/24 16:53:20 by mchingi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 	arg[4] = If here appears an arg 
 			it just became the arg of cmd 
 			and execute but ignores Here_DOC
-*/
+
 static int	ft_wordlen(char const *s, int start)
 {
 	int	i;
@@ -36,9 +36,9 @@ static int	ft_wordlen(char const *s, int start)
 		i++;
 	}
 	return (count);
-}
+}*/
 
-static char	*get_string(char *input, int start)
+/*static char	*get_string(char *input, int start)
 {
 	int		i;
 	int		j;
@@ -79,14 +79,37 @@ static char	*get_delimeter(char *input)
 	return (delimeter);
 }
 
+static char *get_delimeter(char *input)
+{
+    int i = 0;
+    char *delimeter;
+
+    // Skip leading spaces
+    while (isspace(input[i]))
+        i++;
+
+    // Check for "<<"
+    if (input[i] == '<' && input[i + 1] == '<')
+    {
+        i += 2; // Skip "<<"
+        // Skip spaces after "<<"
+        while (isspace(input[i]))
+            i++;
+        // Extract the delimiter
+        delimeter = get_string(input, i);
+        return delimeter;
+    }
+    return NULL; // No delimiter found
+}*/
+
 void	here_doc(char *str)
 {
 	int		fd;
 	char	*input;
 	char	*delimeter;
 
-	delimeter = get_delimeter(str);
-	fd = open(".DOC_TMP", O_WRONLY | O_CREAT | O_APPEND, 0777);
+	delimeter = strdup(str);
+	fd = open(".DOC_TMP", O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	while (1)
 	{
 		input = readline("> ");
@@ -102,9 +125,10 @@ void	here_doc(char *str)
 		free(input);
 	}
 	close(fd);
+	free(delimeter);
 }
 
-int	check_doc(char *input)
+/*int	check_doc(char *input)
 {
 	int	i;
 
@@ -122,7 +146,7 @@ int	check_doc(char *input)
 		i++;
 	}
 	return (0);
-}
+}*/
 
 // int	main(int ac, char **av, char **ev)
 // {

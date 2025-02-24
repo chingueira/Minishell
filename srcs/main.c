@@ -6,7 +6,7 @@
 /*   By: mchingi <mchingi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:16:24 by mchingi           #+#    #+#             */
-/*   Updated: 2025/02/22 16:03:47 by mchingi          ###   ########.fr       */
+/*   Updated: 2025/02/24 17:10:32 by mchingi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ void	repl(t_shell *shell)
 			break ;
 		add_history(shell->input);	
 		parse(shell);
-		// debug(shell->token, shell->num_of_cmds);
-		// printf("\n");
-		execute_pipe2(shell, shell->token);
+		debug(shell->token, shell->num_of_cmds);
+		printf("\n");
+		// execute_pipe2(shell, shell->token);
 	}
 }
 
