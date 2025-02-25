@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_matrix.c                                      :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/11 14:30:54 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/25 09:31:36 by welepy           ###   ########.fr       */
+/*   Created: 2025/02/25 09:30:35 by welepy            #+#    #+#             */
+/*   Updated: 2025/02/25 09:30:39 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft.h"
+#include "../libft.h"
 
-void	free_matrix(char **matrix)
+void	ft_free(char **ptr)
 {
-	int	i;
-
-	i = 0;
-	while (matrix[i])
+	if (*ptr)
 	{
-		ft_free(&matrix[i]);
-		i++;
+		free(*ptr);
+		*ptr = NULL;
 	}
-	free(matrix);
 }

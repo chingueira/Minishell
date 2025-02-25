@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   free_matrix.c                                      :+:      :+:    :+:   */
+/*   all_spaces.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: welepy <welepy@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/11 14:30:54 by marcsilv          #+#    #+#             */
-/*   Updated: 2025/02/25 09:31:36 by welepy           ###   ########.fr       */
+/*   Created: 2025/02/25 09:25:56 by welepy            #+#    #+#             */
+/*   Updated: 2025/02/25 09:26:18 by welepy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../libft.h"
+#include "../libft.h"
 
-void	free_matrix(char **matrix)
+bool	all_spaces(char *str)
 {
-	int	i;
-
-	i = 0;
-	while (matrix[i])
+	while (*str)
 	{
-		ft_free(&matrix[i]);
-		i++;
+		if (!ft_isspace(*str))
+			return (false);
+		str++;
 	}
-	free(matrix);
+	return (true);
 }
